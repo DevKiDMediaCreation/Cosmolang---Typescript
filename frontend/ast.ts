@@ -1,40 +1,50 @@
 export type NodeType =
-    | "Program"
-    | "NumericLiteral"
-    | "NullLiteral"
-    | "Identifier"
-    | "BinaryExpr";
+  // STATEMENTS
+  | "Program"
+  | "VarDeclaration"
 
-    //let x= if true { 45 } else { 55 }
+  // EXPRESSIONS
+  | "NumericLiteral"
+  | "Identifier"
+  | "BinaryExpr";
+
+//let x= if true { 45 } else { 55 }
 export interface Stmt {
-    kind: NodeType;
+  kind: NodeType;
 }
 
 export interface Program extends Stmt {
-    kind: "Program";
-    body: Stmt[];
+  kind: "Program";
+  body: Stmt[];
 }
 
-export interface Expr extends Stmt { }
+export interface VarDeclaration extends Stmt {
+  kind: "VarDeclaration";
+  constant: boolean;
+  identifier: string;
+  value?: Expr;
+}
 
+export interface Expr extends Stmt {}
+
+/**
+ * A operation with two sides seperated by a operator.
+ * Both sides can be ANY Complex Expression.
+ * - Supported Operators -> + | - | / | * | %
+ */
 export interface BinaryExpr extends Expr {
-    kind: "BinaryExpr"
-    left: Expr;
-    right: Expr;
-    operator: string;
+  kind: "BinaryExpr";
+  left: Expr;
+  right: Expr;
+  operator: string; // needs to be of type BinaryOperator
 }
 
 export interface Identifier extends Expr {
-    kind: "Identifier";
-    symbol: string;
+  kind: "Identifier";
+  symbol: string;
 }
 
 export interface NumericLiteral extends Expr {
-    kind: "NumericLiteral";
-    value: number;
-}
-
-export interface NullLiteral extends Expr {
-    kind: "NullLiteral";
-    value: "null";
+  kind: "NumericLiteral";
+  value: number;
 }
